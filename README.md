@@ -129,3 +129,19 @@ Multiple conditions and filters:
 ```
 curl -H "Content-Type: application/json" localhost:9201/blog/_search?pretty -d '{ "query": { "bool": { "must": [ { "match": { "content": "compilation" } }, { "match": { "content": "kitten" } } ], "filter": { "term": { "tags": "cats" } } } } }'
 ```
+
+## Aggregations
+
+Read more about aggregations: https://www.elastic.co/guide/en/elasticsearch/reference/6.6/search-aggregations.html
+
+The average number of likes of all blog posts:
+
+```
+curl -X POST -H "Content-Type: application/json" localhost:9201/blog/_search?pretty -d '{ "query": { "match_all": {} }, "size": "0", "aggs": { "average_likes": { "avg": { "field": "likes" } } } }'
+```
+
+Printing all tags and number of articles related to each tag using aggregation by terms:
+
+```
+curl -X POST -H "Content-Type: application/json" localhost:9201/blog/_search?pretty -d '{ "query": { "match_all": {} }, "size": "0", "aggs": { "articles_by_tags": { "terms": { "field": "tags" } } } }'
+```
