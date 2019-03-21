@@ -3,9 +3,12 @@
 Assuming that we have our Elasticsearch available at http://localhost:9201
 
 ## Creating an index
-The full guides on creating indices: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html,  
-analyzers: https://www.elastic.co/guide/en/elasticsearch/reference/current/analyzer.html,  
-and stemmer token filter: https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-stemmer-tokenfilter.html
+ - The full guides on creating indices:  
+ https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html,  
+- analyzers:  
+https://www.elastic.co/guide/en/elasticsearch/reference/current/analyzer.html,  
+- stemmer token filter:  
+https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-stemmer-tokenfilter.html
 
 Create an index called "blog" with a custom analyzer:
 
@@ -89,4 +92,40 @@ Read more on _analyze API: https://www.elastic.co/guide/en/elasticsearch/referen
 
 ```
 curl -X GET -H "Content-Type: application/json" localhost:9201/blog/_analyze?pretty -d '{ "analyzer": "my_custom_analyzer", "text": "The quick brown fox jumps over the lazy dog" }'
+```
+
+## Searching documents
+
+More on search:
+
+- https://www.elastic.co/guide/en/elasticsearch/reference/current/search.html
+- https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html
+- https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html
+
+Search by term:
+
+```
+curl -H "Content-Type: application/json" localhost:9201/blog/_search?pretty -d '{ "query": { "term": { "tags": "traveling" } } }'
+```
+
+Note: when we perform search by a term, Elasticsearch does not analyze the input. So if we specified *Traveling* instead of *traveling*, we wouldn't find anything.
+
+Full text search:
+
+```
+curl -H "Content-Type: application/json" localhost:9201/blog/_search?pretty -d '{ "query": { "match": { "title": "vacation" } } }'
+```
+
+In this case we will still get the result as Elasticsearch analyzes the input before matching to the tokens in the inverted index.
+
+Fuzzy queries, correcting spelling mistakes:
+
+```
+curl -H "Content-Type: application/json" localhost:9201/blog/_search?pretty -d '{ "query": { "fuzzy": { "content": "peeple" } } }'
+```
+
+Multiple conditions and filters:
+
+```
+curl -H "Content-Type: application/json" localhost:9201/blog/_search?pretty -d '{ "query": { "bool": { "must": [ { "match": { "content": "compilation" } }, { "match": { "content": "kitten" } } ], "filter": { "term": { "tags": "cats" } } } } }'
 ```
