@@ -1,0 +1,6 @@
+{ "index": { "_index": "blog", "_type": "post", "_id": "1" } }
+{ "title": "Elasticsearch for beginners", "content": "A test article that describes the main concepts", "tags": [ "java", "elasticsearch" ], "likes": 10 }
+{ "index": { "_index": "blog", "_type": "post", "_id": "2" } }
+{ "title": "Funny cats videos #19 February", "content": "Here is the monthly videos compilation with the funniest kittens", "tags": [ "humor", "cats" ], "likes": 100 }
+{ "index": { "_index": "blog", "_type": "post", "_id": "3" } }
+{ "title": "Vacation in Barcelona", "content": "In this blog we well see how people live in Barcelona", "tags": [ "traveling", "Spain" ], "likes": 57 }

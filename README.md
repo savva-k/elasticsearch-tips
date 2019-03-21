@@ -72,3 +72,21 @@ curl -X GET localhost:9201/blog/_settings?pretty
 curl -X GET localhost:9201/blog/_stats?pretty
 ```
 
+## Add some data with the bulk upload operation
+
+Let's add some data to continue with the search and aggregations functionality. The data is placed in the *test_data* file in this repository.
+
+```
+curl -s -H "Content-Type: application/x-ndjson" -X POST localhost:9201/_bulk --data-binary "@test_data"
+```
+and check what that everything is fine
+```
+curl localhost:9201/blog/post/1?pretty
+```
+
+## Check how our analyzer works
+Read more on _analyze API: https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-analyze.html
+
+```
+curl -X GET -H "Content-Type: application/json" localhost:9201/blog/_analyze?pretty -d '{ "analyzer": "my_custom_analyzer", "text": "The quick brown fox jumps over the lazy dog" }'
+```
